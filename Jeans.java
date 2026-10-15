@@ -24,10 +24,16 @@ public class Jeans extends SanPhamThoiTrang implements IDiscount {
         return getGiaBan() * 0.1;
     }
 
+    // @Override
+    // public double calculateAfterDiscount(double price) {
+    //     double basePrice = getGiaBan();
+    //     return basePrice - (basePrice * 0.1);
+    // }
+
     @Override
-    public double calculateAfterDiscount(double price) {
+    public double calculateAfterDiscount(double discountPercentage) {
         double basePrice = getGiaBan();
-        return basePrice - (basePrice * 0.1);
+        return basePrice - (basePrice * discountPercentage / 100);
     }
 
     @Override

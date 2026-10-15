@@ -19,20 +19,18 @@ public class Bill {
     public double calculateTotalPrice() {
         double totalPrice = 0;
         for (SanPhamThoiTrang product :shoppingList) {
+            double itemPrice = product.getGiaBan();
             if (product instanceof IDiscount) {
                 IDiscount discountProduct = (IDiscount) product;
-                totalPrice += discountProduct.calculateAfterDiscount(10);
-            } else {
-                totalPrice += product.getGiaBan();
+                itemPrice = discountProduct.calculateAfterDiscount(10);
             }
+            totalPrice += itemPrice + product.VATcalculation();
         }
         if(this.costumer != null && this.costumer instanceof Staff) {
             Staff staff = (Staff) this.costumer;
             totalPrice = staff.calculateAfterDiscount(totalPrice);
             System.out.println("Applied Staff discount");
-        } else
-        
-        if (this.costumer != null && this.costumer instanceof CostumerVIP) {
+        } else if (this.costumer != null && this.costumer instanceof CostumerVIP) {
             CostumerVIP vip = (CostumerVIP) this.costumer;
             totalPrice = vip.calculateAfterDiscount(totalPrice);
             System.out.println("Applied VIP discount");
@@ -52,11 +50,21 @@ public class Bill {
         }
         System.out.println("Products in the bill:");
         for (SanPhamThoiTrang product : shoppingList) {
-            System.out.println("Product Name: " + product.getTenSP() + " | Product Price: " + product.getGiaBan());
+            System.out.println("- Product Name: " + product.getTenSP() 
+                    + " | Base Price: " + product.getGiaBan() 
+                    + " | VAT: " + product.VATcalculation());
         }
 
         System.out.println("<--------------------------------------------->");
-        System.out.println("Total Price: " + calculateTotalPrice());
+        double finalTotal = calculateTotalPrice();
+        System.out.println("Total Price (after discounts & VAT): " + finalTotal);
         System.out.println("<--------------------------------------------->");
-    }
+
+        // In phiếu bảo hành cho các sản phẩm có hỗ trợ IWarranty (AoKhoac, Accessory)
+        for (SanPhamThoiTrang product : shoppingList) {
+            if (product instanceof IWarranty) {
+                IWarranty warrantyItem = (IWarranty) product;
+                warrantyItem.printWarrantyCard();
+            }
+        }
 }

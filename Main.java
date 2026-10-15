@@ -15,7 +15,7 @@ public class Main {
             System.out.println("4. Update product");
             System.out.println("5. Display all products");
             System.out.println("6. Run promotion");
-            System.out.println("7. Add VIP customer");
+            System.out.println("7. Add VIP customer || Staff");
             System.out.println("8. Process the payment");
             System.out.println("0. Save and exit");
             System.out.print("Enter your choice: ");
@@ -26,12 +26,16 @@ public class Main {
     
                 switch (choice) {
                     case 1:
-                        System.out.println("Enter product type: ");
+                        System.out.println("Enter product type (AoKhoac / Jeans / Accessory / TShirt): ");
                         String type = scanner.nextLine();
                         
                         // THUỘC TÍNH CHUNG
                         System.out.println("Enter product code: ");
                         String code = scanner.nextLine();
+                        if (store.getProductByCode(code) != null) {
+                            System.out.println("Error: Product code already exists!");
+                            break;
+                        }
                         System.out.println("Enter product name: ");
                         String name = scanner.nextLine();
                         System.out.println("Enter product price: ");
@@ -58,7 +62,7 @@ public class Main {
                         } else if (type.equalsIgnoreCase("TShirt")) {
                             System.out.println("Enter Size: ");
                             String sz = scanner.nextLine();
-                            store.addProduct(new TShirt("TShirt", code, name, price, size));
+                            store.addProduct(new TShirt("TShirt", code, name, price, sz));
                             System.out.println("Added item");
                         } else {
                             System.out.println("Invalid product type.");
@@ -91,14 +95,24 @@ public class Main {
                         System.out.println("Promotion applied");
                         break;
                     case 7:
-                        System.out.println("Enter VIP customer name: ");
-                        String vipName = scanner.nextLine();
-                        System.out.println("Enter VIP customer phone number: ");
-                        String vipPhone = scanner.nextLine();
-                        System.out.println("Enter VIP card code: ");
-                        String vipCardCode = scanner.nextLine();
-                        store.addCostumerVIP(new CostumerVIP(vipName, vipPhone, vipCardCode));
-                        System.out.println("VIP customer added.");
+                        System.out.println("1. Add VIP Customer | 2. Add Staff: ");
+                        int cType = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("Enter name: ");
+                        String cName = scanner.nextLine();
+                        System.out.println("Enter phone number: ");
+                        String cPhone = scanner.nextLine();
+                        if (cType == 2) {
+                            System.out.println("Enter Staff ID: ");
+                            String staffId = scanner.nextLine();
+                            store.addCostumerVIP(new Staff(cName, cPhone, staffId));
+                            System.out.println("Staff added.");
+                        } else {
+                            System.out.println("Enter VIP card code: ");
+                            String vipCardCode = scanner.nextLine();
+                            store.addCostumerVIP(new CostumerVIP(cName, cPhone, vipCardCode));
+                            System.out.println("VIP customer added.");
+                        }
                         break;
                     case 8:
                         System.out.println("PROCESSING PAYMENT");

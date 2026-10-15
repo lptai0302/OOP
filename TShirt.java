@@ -1,10 +1,15 @@
-public class TShirt extends SanPhamThoiTrang {
+public class TShirt extends SanPhamThoiTrang implements IDiscount {
     private String size;
     
     //CONSTRUCTOR
     public TShirt(String Type, String MaSP, String TenSP, double GiaSP, String size) {
         super(Type, MaSP, TenSP, GiaSP);
-        this.size = size;
+        if (size.equalsIgnoreCase("S") || size.equalsIgnoreCase("M") || size.equalsIgnoreCase("L") || size.equalsIgnoreCase("XL")) {
+            this.size = size.toUpperCase();
+        } else {
+            System.out.println("Invalid size (" + size + "). Defaulting to size 'M'.");
+            this.size = "M";
+        }
     }
 
     //GETTER

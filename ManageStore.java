@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class ManageStore {
     private ArrayList<SanPhamThoiTrang> wareHouse;
 
-    private ArrayList<CostumerVIP> listCostumerVIP;
+    private ArrayList<Costumer> listCostumerVIP;
 
     public ManageStore() {
         this.wareHouse = new ArrayList<>();
@@ -12,7 +12,24 @@ public class ManageStore {
     }
 
     public void addProduct(SanPhamThoiTrang product) {
+        if (getProductByCode(product.getMaSP()) != null) {
+            System.out.println("Product with code " + product.getMaSP() + " already exists!");
+            SanPhamThoiTrang.quantityOfProducts--; // Hoàn lại biến đếm vì không thêm vào kho
+            return;
+        }
         wareHouse.add(product);
+    }
+
+    public void removeProduct(String MaSP) {
+        for (int i = 0; i < wareHouse.size(); i++) {
+            if (wareHouse.get(i).getMaSP().equals(MaSP)) {
+                wareHouse.remove(i);
+                SanPhamThoiTrang.quantityOfProducts--; // Giảm tổng số lượng sản phẩm trong kho
+                System.out.println("Deleted product with code: " + MaSP);
+                return;
+            }
+        }
+        System.out.println("Product with code " + MaSP + " not found.");
     }
 
     public void displayAllProducts() {
@@ -23,17 +40,6 @@ public class ManageStore {
         for (SanPhamThoiTrang product : wareHouse) {
             product.HienThiThongTin();
         }
-    }
-
-    public void removeProduct(String MaSP) {
-        for (int i = 0; i < wareHouse.size(); i++) {
-            if (wareHouse.get(i).getMaSP().equals(MaSP)) {
-                wareHouse.remove(i);
-                System.out.println("Deleted product with code: " + MaSP);
-                return;
-            }
-        }
-        System.out.println("Product with code " + MaSP + " not found.");
     }
 
     public void searchProducts(String MaSP) {
@@ -68,6 +74,9 @@ public class ManageStore {
     }
 
     public void loadDataFromFile(String fileName) {
+        File file = new File(fileName);
+        if(!file.exists()) return;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String Line;
 
@@ -89,6 +98,14 @@ public class ManageStore {
                         Jeans jeans = new Jeans(type, code, name, price, style);
                         wareHouse.add(jeans);
                         break;
+                    case "TShirt":
+                        String size = parts[4];
+                        wareHouse.add(new TShirt(type, code, name, price, size));
+                        break;
+                    case "Accessory":
+                        String material = parts[4];
+                        wareHouse.add(new Accessory(type, code, name, price, material));
+                        break;
                     default:
                         System.out.println("Unknown product type: " + type);
                         break;
@@ -109,6 +126,7 @@ public class ManageStore {
                 } else {
                     System.out.println("Failed to update price.");
                 }
+                return;
             }
         }
         System.out.println("Product with code " + MaSP + " not found.");
@@ -128,12 +146,12 @@ public class ManageStore {
     //     }
     // }
 
-    public void addCostumerVIP(CostumerVIP vip) {
+    public void addCostumerVIP(Costumer vip) {
         listCostumerVIP.add(vip);
     }
 
-    public CostumerVIP getVIPByPhone(String phone) {
-        for (CostumerVIP vip : listCostumerVIP) {
+    public Costumer getVIPByPhone(String phone) {
+        for (Costumer vip : listCostumerVIP) {
             if (vip.getNumberPhone().equals(phone)) {
                 return vip;
             }
@@ -142,17 +160,13 @@ public class ManageStore {
     }
 
     public void runAPromotion() {
-        ArrayList<IDiscount> discountProducts = new ArrayList<>();
-
         for (SanPhamThoiTrang product : wareHouse) {
             if (product instanceof IDiscount) {
-                discountProducts.add((IDiscount) product);
+                IDiscount discountProduct = (IDiscount) product;
+                double newPrice = discountProduct.calculateAfterDiscount(10);
+                product.setGiaBan(newPrice);
             }
         }
-
-        for (IDiscount object : discountProducts) {
-            double newPrice = object.calculateAfterDiscount(10);
-        }
-        System.out.println("Discounted the object on the list");
+        System.out.println("Discounted 10% on all eligible products in the warehouse.");
     }
 }

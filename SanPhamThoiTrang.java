@@ -11,7 +11,7 @@ public abstract class SanPhamThoiTrang {
         this.Type = Type;
         this.MaSP = MaSP;
         this.TenSP = TenSP;
-        this.GiaSP = GiaSP;
+        this.GiaSP = (GiaSP >= 0) ? GiaSP : 0;
 
         SanPhamThoiTrang.quantityOfProducts++;
     }

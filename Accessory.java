@@ -1,4 +1,4 @@
-public class Accessory extends SanPhamThoiTrang,IWarranty {
+public class Accessory extends SanPhamThoiTrang implements IWarranty, IDiscount {
     private String Material;
 
     //CONSTRUCTOR
