@@ -67,4 +67,5 @@ public class Bill {
                 warrantyItem.printWarrantyCard();
             }
         }
+    }
 }
