@@ -50,6 +50,16 @@ public class Main {
                             String style = scanner.nextLine();
                             store.addProduct(new Jeans("Jeans", code, name, price, style));
                             System.out.println("Added item");
+                        } else if (type.equalsIgnoreCase("Accessory")) {
+                            System.out.println("Enter Material: ");
+                            String material = scanner.nextLine();
+                            store.addProduct(new Accessory("Accessory", code, name, price, material));
+                            System.out.println("Added item");
+                        } else if (type.equalsIgnoreCase("TShirt")) {
+                            System.out.println("Enter Size: ");
+                            String sz = scanner.nextLine();
+                            store.addProduct(new TShirt("TShirt", code, name, price, size));
+                            System.out.println("Added item");
                         } else {
                             System.out.println("Invalid product type.");
                         }
