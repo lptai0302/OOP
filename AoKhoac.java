@@ -1,9 +1,7 @@
-public class AoKhoac extends SanPhamThoiTrang implements IDiscount, IWarranty {
+public class AoKhoac extends SanPhamThoiTrang implements IBaoHanh {
     private boolean hasHat;
 
-    //CONSTRUCTOR
     public AoKhoac(String Type, String MaSP, String TenSP, double GiaSP, boolean hasHat) {
-        //gọi đến class cha của constructor
         super(Type, MaSP, TenSP, GiaSP);
         this.hasHat = hasHat;
     }
@@ -17,32 +15,19 @@ public class AoKhoac extends SanPhamThoiTrang implements IDiscount, IWarranty {
     }
 
     @Override
-    public void HienThiThongTin() {
-        super.HienThiThongTin();
-
-        String hasHatStr = this.hasHat ? "Yes" : "No";
-        System.out.println("Has Hat: " + hasHatStr);
-        System.out.println("---------------------------");
-        
-    }
-
-    @Override
-    public double VATcalculation() {
-        return getGiaBan() * 0.1;
-    }
-
-    @Override
-    public double calculateAfterDiscount(double discountPercentage) {
-        double basePrice = getGiaBan();
-        return basePrice - (basePrice * discountPercentage / 100);
+    public String getThongTinRieng() {
+        return "Co non: " + (this.hasHat ? "Co" : "Khong");
     }
 
     @Override
     public void printWarrantyCard() {
-        System.out.println("Warranty Card for " + getTenSP());
-        System.out.println("Product Code: " + getMaSP());
-        System.out.println("Warranty Period: " + getWarrantyPeriod() + " months");
-        System.out.println("---------------------------");
+        System.out.println("+-------------------------------------------------------+");
+        System.out.println("|                   PHIEU BAO HANH                      |");
+        System.out.println("+-------------------------------------------------------+");
+        System.out.printf("| Ten san pham      : %-33s |\n", getTenSP());
+        System.out.printf("| Ma san pham       : %-33s |\n", getMaSP());
+        System.out.printf("| Thoi han bao hanh : %-33s |\n", getWarrantyPeriod() + " thang");
+        System.out.println("+-------------------------------------------------------+");
     }
 
     @Override

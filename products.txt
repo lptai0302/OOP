@@ -1,0 +1,3 @@
+AoKhoac,AK001,Adidas,1800000.0,false
+AoThun,AT001,Polo,350000.0,L
+AoKhoac,AK002,Nike Windbreaker,2450000.0,true

@@ -1,14 +1,12 @@
-public class Person {
-    
+public class Nguoi {
     private String name;
     private String numberPhone;
 
-    public Person(String name, String numberPhone) {
+    public Nguoi(String name, String numberPhone) {
         this.name = name;
         this.numberPhone = numberPhone;
     }
 
-    // GETTERS
     public String getName() {
         return name;
     }

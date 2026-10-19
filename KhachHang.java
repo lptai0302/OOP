@@ -1,14 +1,12 @@
-public class Costumer extends Person {
+public class KhachHang extends Nguoi {
     private String membershipType;
-    
-    public Costumer(String name, String numberPhone, String membershipType) {
+
+    public KhachHang(String name, String numberPhone, String membershipType) {
         super(name, numberPhone);
         this.membershipType = membershipType;
     }
 
-    //GETTER
     public String getMembershipType() {
         return membershipType;
     }
-
 }

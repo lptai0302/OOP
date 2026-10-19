@@ -1,3 +1,3 @@
-public interface IDiscount {
+public interface IGiamGia {
     double calculateAfterDiscount(double price);
 }
