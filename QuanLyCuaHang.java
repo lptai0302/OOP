@@ -205,8 +205,13 @@ public class QuanLyCuaHang {
         System.out.println("Luu y: Muc giam gia se tu dong duoc ap dung khi xuat hoa don.\n");
     }
 
-    public void addVIPOrStaff(Nguoi person) {
+    public boolean addVIPOrStaff(Nguoi person) {
+        if (getVIPOrStaffByPhone(person.getNumberPhone()) != null) {
+            System.out.println("Loi: So dien thoai " + person.getNumberPhone() + " da ton tai trong he thong!");
+            return false;
+        }
         listVIPAndStaff.add(person);
+        return true;
     }
 
     public Nguoi getVIPOrStaffByPhone(String phone) {

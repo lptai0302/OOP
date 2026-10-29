@@ -26,8 +26,18 @@ public class Main {
             System.out.print("Nhap lua chon cua ban: ");
 
             try {
-                int choice = scanner.nextInt();
-                scanner.nextLine();
+                String choiceStr = scanner.nextLine().trim();
+                if (choiceStr.isEmpty()) {
+                    continue;
+                }
+                int choice;
+                try {
+                    choice = Integer.parseInt(choiceStr);
+                } catch (NumberFormatException e) {
+                    System.out.println("Du lieu nhap khong hop le. Vui long nhap so.");
+                    choNhanEnter(scanner);
+                    continue;
+                }
 
                 switch (choice) {
                     case 1:
@@ -45,31 +55,64 @@ public class Main {
                         String code = store.taoMaSPTuDong(type);
                         System.out.println("Ma san pham duoc tao tu dong: " + code);
 
-                        System.out.println("Nhap ten san pham: ");
-                        String name = scanner.nextLine();
-                        System.out.println("Nhap gia san pham: ");
-                        double price = scanner.nextDouble();
-                        scanner.nextLine();
+                        String name;
+                        while (true) {
+                            System.out.println("Nhap ten san pham: ");
+                            name = scanner.nextLine().trim().replace(",", " ");
+                            if (!name.isEmpty()) {
+                                break;
+                            }
+                            System.out.println("Ten san pham khong duoc de trong!");
+                        }
+
+                        double price;
+                        while (true) {
+                            System.out.println("Nhap gia san pham: ");
+                            try {
+                                price = Double.parseDouble(scanner.nextLine().trim());
+                                if (price >= 0) {
+                                    break;
+                                }
+                                System.out.println("Gia san pham phai lon hon hoac bang 0!");
+                            } catch (NumberFormatException e) {
+                                System.out.println("Gia khong hop le, vui long nhap so!");
+                            }
+                        }
 
                         if (type.equalsIgnoreCase("AoKhoac")) {
-                            System.out.println("Ao co non khong? (true/false): ");
-                            boolean hasHat = scanner.nextBoolean();
-                            scanner.nextLine();
+                            System.out.println("Ao co non khong? (1: Co / 0: Khong): ");
+                            String hatInput = scanner.nextLine().trim().toLowerCase();
+                            boolean hasHat = hatInput.equals("1") || hatInput.equals("co")
+                                    || hatInput.equals("true") || hatInput.equals("y");
                             store.addProduct(new AoKhoac("AoKhoac", code, name, price, hasHat));
                             System.out.println("Da them ao khoac thanh cong. Ma SP: " + code);
                         } else if (type.equalsIgnoreCase("QuanJean") || type.equalsIgnoreCase("Jeans")) {
-                            System.out.println("Nhap kieu dang: ");
-                            String style = scanner.nextLine();
+                            String style;
+                            while (true) {
+                                System.out.println("Nhap kieu dang: ");
+                                style = scanner.nextLine().trim().replace(",", " ");
+                                if (!style.isEmpty()) {
+                                    break;
+                                }
+                                System.out.println("Kieu dang khong duoc de trong!");
+                            }
                             store.addProduct(new QuanJean("QuanJean", code, name, price, style));
                             System.out.println("Da them quan jean thanh cong. Ma SP: " + code);
                         } else if (type.equalsIgnoreCase("PhuKien") || type.equalsIgnoreCase("Accessory")) {
-                            System.out.println("Nhap chat lieu: ");
-                            String material = scanner.nextLine();
+                            String material;
+                            while (true) {
+                                System.out.println("Nhap chat lieu: ");
+                                material = scanner.nextLine().trim().replace(",", " ");
+                                if (!material.isEmpty()) {
+                                    break;
+                                }
+                                System.out.println("Chat lieu khong duoc de trong!");
+                            }
                             store.addProduct(new PhuKien("PhuKien", code, name, price, material));
                             System.out.println("Da them phu kien thanh cong. Ma SP: " + code);
                         } else if (type.equalsIgnoreCase("AoThun") || type.equalsIgnoreCase("TShirt")) {
                             System.out.println("Nhap kich co (S/M/L/XL): ");
-                            String sz = scanner.nextLine();
+                            String sz = scanner.nextLine().trim();
                             store.addProduct(new AoThun("AoThun", code, name, price, sz));
                             System.out.println("Da them ao thun thanh cong. Ma SP: " + code);
                         }
@@ -77,14 +120,14 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Nhap ma san pham can xoa: ");
-                        String deleteCode = scanner.nextLine();
+                        String deleteCode = scanner.nextLine().trim();
                         store.removeProduct(deleteCode);
                         choNhanEnter(scanner);
                         break;
                     case 3:
                         while (true) {
                             System.out.println("Nhap ma san pham can tim: ");
-                            String searchCode = scanner.nextLine();
+                            String searchCode = scanner.nextLine().trim();
                             store.searchProducts(searchCode);
                             System.out.print("Ban co muon tim tiep khong? (1: Tim tiep / 0: Quay lai menu): ");
                             String opt = scanner.nextLine().trim();
@@ -96,10 +139,25 @@ public class Main {
                         break;
                     case 4:
                         System.out.println("Nhap ma san pham can cap nhat: ");
-                        String updateCode = scanner.nextLine();
-                        System.out.println("Nhap gia moi: ");
-                        double newPrice = scanner.nextDouble();
-                        scanner.nextLine();
+                        String updateCode = scanner.nextLine().trim();
+                        if (store.getProductByCode(updateCode) == null) {
+                            System.out.println("Khong tim thay san pham co ma " + updateCode + ".");
+                            choNhanEnter(scanner);
+                            break;
+                        }
+                        double newPrice;
+                        while (true) {
+                            System.out.println("Nhap gia moi: ");
+                            try {
+                                newPrice = Double.parseDouble(scanner.nextLine().trim());
+                                if (newPrice >= 0) {
+                                    break;
+                                }
+                                System.out.println("Gia san pham phai lon hon hoac bang 0!");
+                            } catch (NumberFormatException e) {
+                                System.out.println("Gia khong hop le, vui long nhap so!");
+                            }
+                        }
                         store.updatePrice(updateCode, newPrice);
                         choNhanEnter(scanner);
                         break;
@@ -114,22 +172,63 @@ public class Main {
                         break;
                     case 7:
                         System.out.println("1. Them Khach hang VIP | 2. Them Nhan vien: ");
-                        int cType = scanner.nextInt();
-                        scanner.nextLine();
-                        System.out.println("Nhap ho ten: ");
-                        String cName = scanner.nextLine();
-                        System.out.println("Nhap so dien thoai: ");
-                        String cPhone = scanner.nextLine();
+                        String cTypeStr = scanner.nextLine().trim();
+                        int cType = cTypeStr.equals("2") ? 2 : 1;
+
+                        String cName;
+                        while (true) {
+                            System.out.println("Nhap ho ten: ");
+                            cName = scanner.nextLine().trim();
+                            if (!cName.isEmpty()) {
+                                break;
+                            }
+                            System.out.println("Ho ten khong duoc de trong!");
+                        }
+
+                        String cPhone;
+                        while (true) {
+                            System.out.println("Nhap so dien thoai: ");
+                            cPhone = scanner.nextLine().trim();
+                            if (cPhone.isEmpty()) {
+                                System.out.println("So dien thoai khong duoc de trong!");
+                                continue;
+                            }
+                            if (store.getVIPOrStaffByPhone(cPhone) != null) {
+                                System.out.println("Loi: So dien thoai " + cPhone + " da ton tai trong he thong!");
+                                cPhone = null;
+                                break;
+                            }
+                            break;
+                        }
+                        if (cPhone == null) {
+                            choNhanEnter(scanner);
+                            break;
+                        }
+
                         if (cType == 2) {
-                            System.out.println("Nhap ma nhan vien: ");
-                            String staffId = scanner.nextLine();
+                            String staffId;
+                            while (true) {
+                                System.out.println("Nhap ma nhan vien: ");
+                                staffId = scanner.nextLine().trim();
+                                if (!staffId.isEmpty()) {
+                                    break;
+                                }
+                                System.out.println("Ma nhan vien khong duoc de trong!");
+                            }
                             store.addVIPOrStaff(new NhanVien(cName, cPhone, staffId));
                             System.out.println("Da them nhan vien thanh cong.");
                         } else {
-                            System.out.println("Nhap ma the VIP: ");
-                            String vipCardCode = scanner.nextLine();
+                            String vipCardCode;
+                            while (true) {
+                                System.out.println("Nhap ma the VIP: ");
+                                vipCardCode = scanner.nextLine().trim();
+                                if (!vipCardCode.isEmpty()) {
+                                    break;
+                                }
+                                System.out.println("Ma the VIP khong duoc de trong!");
+                            }
                             store.addVIPOrStaff(new KhachHangVIP(cName, cPhone, vipCardCode));
-                            System.out.println("Da them khách hang VIP thanh cong.");
+                            System.out.println("Da them khach hang VIP thanh cong.");
                         }
                         choNhanEnter(scanner);
                         break;
@@ -139,7 +238,7 @@ public class Main {
 
                         while (true) {
                             System.out.println("Nhap ma san pham muon mua (hoac nhap '0' de dung): ");
-                            String pCode = scanner.nextLine();
+                            String pCode = scanner.nextLine().trim();
                             if (pCode.equals("0")) {
                                 break;
                             }
@@ -157,7 +256,7 @@ public class Main {
                             break;
                         }
                         System.out.print("Khach hang co tai khoan VIP/Nhan vien khong? Nhap SDT (hoac '0' neu la khach vang lai): ");
-                        String phone = scanner.nextLine();
+                        String phone = scanner.nextLine().trim();
                         Nguoi currentPerson = null;
 
                         if (!phone.equals("0")) {
@@ -184,9 +283,8 @@ public class Main {
                         System.out.println("Lua chon khong hop le. Vui long thu lai.");
                         choNhanEnter(scanner);
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("Du lieu nhap khong hop le. Vui long nhap so.");
-                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Da xay ra loi: " + e.getMessage());
                 choNhanEnter(scanner);
             }
         }
