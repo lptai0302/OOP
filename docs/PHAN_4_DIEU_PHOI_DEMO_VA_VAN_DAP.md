@@ -1,39 +1,42 @@
-# BÁO CÁO CHI TIẾT PHẦN 4: ĐIỀU PHỐI HỆ THỐNG, DEMO CRUD & VẤN ĐÁP
-### HƯỚNG DẪN HỌC & BẢO VỆ VẤN ĐÁP ĐỒ ÁN OOP (ĐIỂM 10/10)
+# BÁO CÁO TOÀN DIỆN PHẦN 4: ĐIỀU PHỐI HỆ THỐNG, DEMO & VẤN ĐÁP
+### TÀI LIỆU CHI TIẾT DÀNH CHO TRƯỞNG NHÓM & BẢO VỆ VẤN ĐÁP (ĐIỂM 10/10)
 
-> **Phân công thành viên:** Thành viên 4 (Trưởng nhóm / Điều phối Demo chính)  
-> **Các lớp phụ trách (3 lớp):** `QuanLyCuaHang`, `Main`, `TestCases`.  
-> **Nhiệm vụ cốt lõi:** Nắm vững kiến trúc lớp điều phối trung tâm (Facade Pattern), toàn bộ vòng lặp giao diện Console Menu 10 chức năng (CRUD), quy trình bán hàng - thanh toán - in phiếu bảo hành và kịch bản vấn đáp toàn diện đạt điểm 10.
-
----
-
-## 1. MÔ HÌNH KIẾN TRÚC ĐIỀU PHỐI HỆ THỐNG (FACADE PATTERN)
-
-```text
-                            [Người dùng / Console]
-                                      |
-                                      v
-                                 [Main.java] (Giao diện View)
-                                      |
-                                      v
-                             [QuanLyCuaHang.java] (Controller / Facade)
-                                 /    |     \
-                                /     |      \
-                               v      v       v
-                     [DanhSachSP]  [DanhSachKH] [ArrayList<NhaCungCap>]
-                            |         |                 |
-                            v         v                 v
-                      products.txt  users.txt     (Nhà máy may mặc)
-```
-
-- **Mô hình Facade / Controller (`QuanLyCuaHang`):** Gom toàn bộ các kho dữ liệu rời rạc (sản phẩm, khách hàng, nhà cung cấp) vào một đầu mối duy nhất. Lớp `Main` không cần tương tác trực tiếp với file hay mảng con, chỉ cần gọi qua `store`.
-- **Cơ chế Tự động Đồng bộ (Auto-save):** Mọi thao tác Thêm, Sửa, Xóa đều tự động kích hoạt `saveDataIntoFile()`, đảm bảo dữ liệu luôn được ghi tức thì xuống đĩa cứng.
+> **Phân công phụ trách:** Thành viên 4 (Trưởng nhóm / Người thuyết trình & Demo chính)  
+> **Mục tiêu:** Nắm toàn bộ kiến trúc điều phối hệ thống (Facade Pattern), làm chủ vòng lặp giao diện Console Menu 10 chức năng (CRUD), quy trình bán hàng - in phiếu bảo hành tự động, kịch bản demo 7 bước mượt mà và bộ câu hỏi vấn đáp ăn trọn điểm 10 của Thầy Hiếu.
 
 ---
 
-## 2. GIẢI THÍCH CHI TIẾT TỪNG ĐOẠN CODE CỐT LÕI
+## 1. DANH MỤC CÁC TẬP TIN (FILES) QUẢN LÝ TRONG PHẦN 4
 
-### Đoạn 1: Lớp điều phối trung tâm `QuanLyCuaHang`
+Phần 4 gồm tổng cộng **3 tập tin mã nguồn (.java)**:
+
+### 1.1. Các tập tin mã nguồn chính (Core Files) - 2 Lớp
+1. `QuanLyCuaHang.java`: Lớp điều phối trung tâm (Controller / Facade Pattern) kết nối giữa giao diện và các kho dữ liệu.
+2. `Main.java`: Lớp giao diện dòng lệnh Console (View & Menu Dispatcher), tiếp nhận mọi tương tác của người dùng.
+
+### 1.2. Tập tin kiểm thử tự động (Testing & Verification) - 1 Lớp
+1. `TestCases.java`: Bộ kịch bản kiểm thử tự động gồm **73 testcase** kiểm tra độ bền vững, đa hình, kế thừa, ngoại lệ và tính đúng đắn của toàn bộ đồ án.
+
+---
+
+## 2. BẢNG PHÂN LOẠI KĨ THUẬT LẬP TRÌNH: CHÍNH VS PHỤ TRỢ
+
+| Phân loại | Tên kĩ thuật | Vị trí xuất hiện trong mã nguồn | Vai trò & Ý nghĩa kỹ thuật |
+|:---|:---|:---|:---|
+| **Kỹ thuật chính** | **Mô hình Điều phối Facade (Facade Pattern)** | Lớp `QuanLyCuaHang` | Che giấu sự phức tạp của các kho dữ liệu bên dưới; gom toàn bộ `DanhSachSanPham`, `DanhSachKhachHang`, `NhaCungCap` vào 1 đầu mối duy nhất. |
+| **Kỹ thuật chính** | **Điều phối giao diện Menu (Menu Dispatcher)** | Vòng lặp `while (true)` & `switch-case` trong `Main.java` | Phân luồng điều khiển 10 chức năng hệ thống; đảm bảo ứng dụng chạy liên tục cho đến khi người dùng chọn thoát. |
+| **Kỹ thuật chính** | **Quy trình Thanh toán & Xuất hóa đơn** | Case 8 trong `Main.java`, phương thức `displayBill()`, `xuatHoaDonRaFile()` | Tích hợp toàn diện: Chọn nhiều mặt hàng, cộng dồn số lượng, tra cứu giảm giá VIP/Nhân viên, tính VAT 10%, in phiếu bảo hành và lưu file text. |
+| **Kỹ thuật chính** | **Kiểm thử tự động (Automated Unit Testing)** | `TestCases.java` (73 testcase) | Minh chứng tính đúng đắn khoa học của đồ án trước giảng viên: Không lỗi logic, không crash ngoại lệ, 100% testcase PASS. |
+| *Kỹ thuật phụ trợ* | **Chống lỗi trôi lệnh Scanner** | `scanner.nextLine().trim()` kết hợp `Integer.parseInt` | Tránh triệt để lỗi bỏ qua dòng (Skip line) khét tiếng của `scanner.nextInt()` trong Java khi nhấn phím Enter. |
+| *Kỹ thuật phụ trợ* | **Ép kiểu Downcasting có điều kiện** | `if (oldSp instanceof AoKhoac) { ((AoKhoac) oldSp).setHasHat(...); }` | Ép kiểu an toàn từ lớp cha về lớp con để sửa các thuộc tính đặc thù (mũ áo, size áo, chất liệu, size giày). |
+| *Kỹ thuật phụ trợ* | **Cơ chế Tự động Lưu tức thì (Auto-save)** | Hàm `saveDataIntoFile()` trong `QuanLyCuaHang.java` | Tự động ghi đè dữ liệu mới nhất xuống file text sau mỗi thao tác Thêm, Sửa, Xóa; không bao giờ mất dữ liệu. |
+| *Kỹ thuật phụ trợ* | **Tìm kiếm kép (Dual Search)** | Tìm theo mã chính xác & tìm theo từ khóa tên gần đúng | Tăng trải nghiệm người dùng, giúp tra cứu nhanh chóng khi không nhớ chính xác mã sản phẩm. |
+
+---
+
+## 3. PHÂN TÍCH CHI TIẾT TỪNG ĐOẠN CODE: CHÍNH VS PHỤ TRỢ
+
+### 3.1. Lớp điều phối trung tâm `QuanLyCuaHang.java`
 ```java
 public class QuanLyCuaHang {
     private DanhSachSanPham dsSanPham;
@@ -53,15 +56,6 @@ public class QuanLyCuaHang {
         }
     }
 
-    public void removeProduct(String MaSP) {
-        if (dsSanPham.xoa(MaSP)) {
-            saveDataIntoFile();
-            System.out.println("Da xoa san pham co ma: " + MaSP);
-        } else {
-            System.out.println("Khong tim thay san pham co ma " + MaSP + ".");
-        }
-    }
-
     public void saveDataIntoFile() {
         dsSanPham.ghiVaoFile("products.txt");
         dsKhachHang.ghiVaoFile("users.txt");
@@ -73,59 +67,38 @@ public class QuanLyCuaHang {
     }
 }
 ```
-- **Giải thích từng dòng code:**
-  - `private DanhSachSanPham dsSanPham; private DanhSachKhachHang dsKhachHang;`: Đóng gói các lớp mảng đối tượng thành các thuộc tính riêng biệt của hệ thống cửa hàng.
-  - `khoiTaoNhaCungCapMacDinh()`: Nạp sẵn danh mục đối tác may mặc lớn (Việt Tiến, An Phước, Biti's) ngay khi khởi động.
-  - `addProduct(...)` & `removeProduct(...)`: Kiểm tra kết quả thực hiện từ lớp danh sách; nếu thành công (`true`) thì lập tức gọi `saveDataIntoFile()` để đồng bộ file ngay. Người dùng không sợ mất dữ liệu khi mất điện hay tắt máy đột ngột.
-  - `loadDataFromFile(...)`: Đọc toàn bộ kho hàng và danh sách người dùng khi mở ứng dụng.
+- **Kỹ thuật chính (Facade Pattern):**
+  - Gom 3 kho dữ liệu: `dsSanPham`, `dsKhachHang`, `dsNhaCungCap`.
+  - Hàm `main` chỉ cần tạo duy nhất 1 đối tượng `QuanLyCuaHang store = new QuanLyCuaHang()`. Mọi thao tác thêm sản phẩm, thêm khách hàng, thanh toán đều gọi qua `store`.
+- **Kỹ thuật phụ trợ (Auto-save):**
+  - Trong `addProduct`, `removeProduct`, `updateProduct`: Bất cứ khi nào thao tác mảng trả về `true`, hệ thống tự động gọi ngay `saveDataIntoFile()`.
 
 ---
 
-### Đoạn 2: Vòng lặp Menu chính trong `Main.java`
+### 3.2. Kỹ thuật tiếp nhận dữ liệu an toàn trong `Main.java`
 ```java
-    public static void main(String[] args) {
-        QuanLyCuaHang store = new QuanLyCuaHang();
-        store.loadDataFromFile("products.txt");
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            inMenu();
-            System.out.print("Nhap lua chon cua ban: ");
-            String input = scanner.nextLine().trim();
-            int choice = -1;
-            try {
-                choice = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Vui long nhap so hop le!");
-                continue;
-            }
-
-            switch (choice) {
-                case 1: // Them san pham
-                case 2: // Xoa san pham
-                case 3: // Tim kiem san pham (theo ma hoac theo ten)
-                case 4: // Sua san pham (ten, gia, thuoc tinh rieng)
-                case 5: // Hien thi tat ca san pham
-                case 6: // Xem khuyen mai 10%
-                case 7: // Quan ly Khach hang / Nhan vien (CRUD)
-                case 8: // Thanh toan hoa don & In bao hanh
-                case 9: // Xem danh sach Nha cung cap
-                case 0:
-                    store.saveDataIntoFile();
-                    System.out.println("Da luu du lieu an toan. Thoat chuong trinh.");
-                    return;
-            }
+    while (true) {
+        inMenu();
+        System.out.print("Nhap lua chon cua ban: ");
+        String input = scanner.nextLine().trim();
+        int choice = -1;
+        try {
+            choice = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Vui long nhap so hop le!");
+            continue;
         }
+        // ... xử lý switch case
     }
 ```
-- **Giải thích từng dòng code:**
-  - Bọc trong vòng lặp vô hạn `while (true)`: Đảm bảo chương trình chạy liên tục cho đến khi người dùng chủ động chọn `0. Luu va thoat`.
-  - Đọc dữ liệu bằng `scanner.nextLine().trim()` kết hợp `Integer.parseInt`: Tránh triệt để lỗi "trôi lệnh" (Skip line) khét tiếng của `scanner.nextInt()` trong Java khi nhấn Enter.
-  - Khối `try-catch (NumberFormatException)`: Ngăn chặn chương trình bị crash khi người dùng vô tình nhập chữ cái thay vì số.
+- **Kỹ thuật chính:** Vòng lặp Menu chính điều khiển toàn bộ ứng dụng.
+- **Kỹ thuật phụ trợ (Phòng chống lỗi nhập liệu):**
+  - Sử dụng `scanner.nextLine().trim()` thay vì `scanner.nextInt()`: Khi dùng `nextInt()`, phím Enter (`\n`) vẫn còn lưu lại trong bộ đệm (Buffer), làm cho lệnh `nextLine()` kế tiếp bị trôi qua mà không cho người dùng kịp nhập. Cách đọc chuỗi rồi ép kiểu bằng `Integer.parseInt` loại bỏ hoàn toàn lỗi này.
+  - Khối `try-catch (NumberFormatException)`: Nếu người dùng lỡ tay gõ chữ cái thay vì số, chương trình bắt lỗi nhẹ nhàng và nhắc nhở chứ không bị crash đột ngột.
 
 ---
 
-### Đoạn 3: Menu 4 - Chức năng Sửa toàn diện (Tên, Giá, Thuộc tính riêng)
+### 3.3. Chức năng Sửa toàn diện kết hợp Downcasting (Menu 4)
 ```java
     if (editOpt.equals("4")) {
         if (oldSp instanceof AoKhoac) {
@@ -146,32 +119,32 @@ public class QuanLyCuaHang {
             ((GiayDep) oldSp).setSizeGiay(sg);
         }
         store.saveDataIntoFile();
+        System.out.println("Da cap nhat thuoc tinh rieng thanh cong!");
     }
 ```
-- **Giải thích từng dòng code:**
-  - `oldSp instanceof AoKhoac`: Toán tử kiểm tra kiểu thực tế của đối tượng tại runtime.
-  - `((AoKhoac) oldSp)`: Kỹ thuật **Downcasting (Ép kiểu xuống)** từ lớp cha `SanPhamThoiTrang` về đúng lớp con cụ thể để gọi được các phương thức riêng biệt (`setHasHat`, `setSize`, `setStyle`, `setSizeGiay`).
-  - Cập nhật xong gọi ngay `store.saveDataIntoFile()`.
+- **Kỹ thuật chính (Downcasting & Instanceof):**
+  - Biến `oldSp` ban đầu có kiểu khai báo là lớp cha `SanPhamThoiTrang` (chỉ có các phương thức chung như `getTenSP`, `getGiaBan`). Lớp cha không hề có các phương thức `setHasHat` hay `setSizeGiay`.
+  - Nhờ toán tử `instanceof` kiểm tra đúng kiểu thực tế và cú pháp ép kiểu xuống `((AoKhoac) oldSp)`, chương trình có thể gọi được các phương thức riêng biệt của từng lớp con.
 
 ---
 
-### Đoạn 4: Menu 8 - Quy trình Thanh toán Hóa đơn & In Phiếu bảo hành
+### 3.4. Quy trình Bán hàng, Chiết khấu & In Bảo hành (Menu 8)
 ```java
     HoaDon newbill = new HoaDon(newBillCode, null);
-    // Vòng lặp cho phép khách chọn nhiều sản phẩm và số lượng...
+    // Nhập sản phẩm và số lượng...
     SanPhamThoiTrang product = store.getProductByCode(pCode);
     newbill.addProduct(product, sl);
 
-    // Nhập số điện thoại tra cứu đối tượng:
+    // Nhập số điện thoại khách hàng:
     Nguoi person = store.getVIPOrStaffByPhone(sdt);
     newbill.setPerson(person);
 
-    // In hóa đơn ra màn hình và lưu file:
+    // In hóa đơn và lưu file:
     newbill.displayBill();
     newbill.xuatHoaDonRaFile("hoadon.txt");
 ```
 ```java
-    // Bên trong HoaDon.java:
+    // Bên trong HoaDon.java: In bảo hành tự động
     public void printAllWarrantyCards() {
         for (ChiTietHoaDon ct : chiTietList) {
             SanPhamThoiTrang sp = ct.getSanPham();
@@ -181,53 +154,58 @@ public class QuanLyCuaHang {
         }
     }
 ```
-- **Giải thích từng dòng code:**
-  - `newbill.setPerson(person)`: Gắn đối tượng khách hàng vào hóa đơn. Nếu là Khách VIP tự động chiết khấu 20%, nếu là Khách thân thiết giảm 10%, nếu là Nhân viên giảm 50%.
-  - `sp instanceof IBaoHanh`: Duyệt danh sách các món hàng đã mua trong đơn; chỉ những món hàng cài đặt interface bảo hành mới gọi đa hình `printWarrantyCard()`.
-  - `newbill.xuatHoaDonRaFile("hoadon.txt")`: Tự động append lịch sử hóa đơn hoàn chỉnh vào file văn bản để phục vụ đối soát kế toán.
+- **Kỹ thuật chính:**
+  - `newbill.setPerson(person)`: Thiết lập đối tượng thanh toán.
+  - Trong `displayBill()`: Tự động gọi đa hình `((IGiamGiaKhachHang) person).applyDiscount(total)` nếu khách là VIP (giảm 20%), Thân thiết (giảm 10%), hoặc Nhân viên (giảm 50%).
+  - `printAllWarrantyCards()`: Tự động in phiếu bảo hành cho những món đồ cài đặt `IBaoHanh`.
+  - `xuatHoaDonRaFile("hoadon.txt")`: Ghi lại toàn bộ nội dung hóa đơn và phiếu bảo hành vào file nhật ký.
 
 ---
 
-## 3. KỊCH BẢN DEMO ĐỒ ÁN TRƯỚC GIẢNG VIÊN (7 BƯỚC ĐẠT ĐIỂM 10)
+## 4. KỊCH BẢN DEMO ĐỒ ÁN TRƯỚC GIẢNG VIÊN (7 BƯỚC ĐẠT ĐIỂM 10)
 
-1. **Bước 1 (Giới thiệu cấu trúc - 30 giây):** Thưa Thầy, đồ án nhóm em có tổng cộng 20 lớp đối tượng và 3 interface, tổ chức theo mô hình phân tầng: Model Sản phẩm, Model Con người, Lớp mảng quản lý, Lớp điều phối Facade và View Console.
-2. **Bước 2 (Xem danh sách sản phẩm - Phím 5):** Mở bảng sản phẩm. Nhấn mạnh việc đóng khung lưới như Excel và định dạng tiền tệ Việt Nam chuẩn dấu chấm (`1.800.000 VND`).
-3. **Bước 3 (Thêm sản phẩm tự sinh mã - Phím 1):** Thêm một sản phẩm mới (ví dụ Giày thể thao). Cho Thầy thấy hệ thống **tự động sinh mã `GD002`** dựa trên tiền tố loại hàng và mã lớn nhất hiện có.
-4. **Bước 4 (Tìm kiếm kép - Phím 3):** Demo tìm kiếm theo mã (`AK001`) và tìm kiếm gần đúng theo từ khóa tên (`Hunter` hoặc `Polo`).
-5. **Bước 5 (Sửa thuộc tính riêng - Phím 4):** Chọn sản phẩm vừa thêm và sửa thuộc tính đặc thù (sửa size giày từ 40 lên 42). Mở file `products.txt` cho Thầy thấy file được cập nhật ngay lập tức.
-6. **Bước 6 (Bán hàng đa hình & In bảo hành - Phím 8):** Mua Áo khoác (`AK001`, SL: 2) và Áo thun (`AT001`, SL: 1). Nhập SĐT VIP (`0912345678`). Cho Thầy xem bảng hóa đơn tự động tính VAT 10%, giảm giá 20% cho VIP và **tự động in Phiếu bảo hành 12 tháng** cho Áo khoác. Mở file `hoadon.txt` xem nhật ký đơn hàng.
-7. **Bước 7 (Minh chứng kiểm thử tự động):** Chạy `java TestCases` trên Terminal để chứng minh 73/73 testcase kiểm thử logic, đa hình và biên ngoại lệ đều PASS 100%.
+1. **Bước 1 (Tổng quan kiến trúc - 30 giây):** Thưa Thầy, đồ án nhóm em xây dựng hệ thống Quản lý cửa hàng thời trang với **20 lớp đối tượng và 3 interface**, tổ chức theo mô hình phân tầng: Model Sản phẩm, Model Con người, Lớp mảng danh sách đóng gói, Lớp điều phối Facade và View Console.
+2. **Bước 2 (Xem danh mục hàng hóa - Phím 5):** Bấm phím 5 hiển thị toàn bộ kho hàng dạng bảng Excel, có phân cột rõ ràng và định dạng tiền tệ chuẩn Việt Nam (`1.800.000 VND`).
+3. **Bước 3 (Thêm sản phẩm tự sinh mã - Phím 1):** Chọn thêm một đôi Giày dép mới. Cho Thầy thấy hệ thống **tự động sinh mã `GD002`** mà người dùng không cần gõ mã bằng tay.
+4. **Bước 4 (Tìm kiếm sản phẩm - Phím 3):** Demo 2 chế độ tìm kiếm: Tìm kiếm theo mã (`AK001`) và Tìm kiếm gần đúng theo tên (`Hunter` hoặc `Polo`).
+5. **Bước 5 (Sửa thông tin sản phẩm - Phím 4):** Chọn sản phẩm vừa thêm và sửa thuộc tính riêng (ví dụ sửa size giày từ 40 lên 42). Mở file `products.txt` minh chứng dữ liệu được cập nhật ngay lập tức.
+6. **Bước 6 (Bán hàng đa hình & In bảo hành - Phím 8):**
+   - Mua 2 Áo khoác (`AK001`) và 1 Áo thun (`AT001`).
+   - Nhập SĐT khách hàng VIP (`0912345678`).
+   - Bảng hóa đơn tự động tính VAT 10%, giảm giá 20% cho VIP và **tự động in kèm Phiếu bảo hành 12 tháng** cho Áo khoác.
+   - Mở file `hoadon.txt` cho Thầy xem hóa đơn được lưu trữ vĩnh viễn.
+7. **Bước 7 (Minh chứng kiểm thử tự động - 1 phút):** Chạy lệnh `java TestCases` trên Terminal, hiển thị kết quả **73/73 testcase vượt qua tuyệt đối (0 thất bại)**.
 
 ---
 
-## 4. BỘ 10 CÂU HỎI VẤN ĐÁP KINH ĐIỂN CỦA THẦY HIẾU & CÂU TRẢ LỜI ĐẠT 10 ĐIỂM
+## 5. BỘ 10 CÂU HỎI VẤN ĐÁP KINH ĐIỂN CỦA THẦY HIẾU (KÈM CÂU TRẢ LỜI ĐIỂM 10)
 
-1. **Thầy hỏi: Đồ án của nhóm có đủ 15 lớp theo yêu cầu không? Kể tên?**  
-   *Trả lời:* Dạ thưa Thầy, nhóm em có **20 lớp và 3 interface**. Gồm: 7 lớp sản phẩm (`SanPhamThoiTrang`, `AoKhoac`, `AoThun`, `QuanJean`, `PhuKien`, `VayDam`, `GiayDep`), 6 lớp con người (`Nguoi`, `KhachHang`, `KhachHangVIP`, `KhachHangThanThiet`, `NhanVien`, `NhanVienQuanLy`), 4 lớp quản lý (`DanhSachSanPham`, `DanhSachKhachHang`, `QuanLyCuaHang`, `NhaCungCap`), 2 lớp hóa đơn (`ChiTietHoaDon`, `HoaDon`), 1 lớp `Main` và 3 interface (`IBaoHanh`, `IGiamGia`, `IGiamGiaKhachHang`).
+1. **Thầy hỏi: Đồ án có đủ 15 lớp theo yêu cầu không? Kể tên?**  
+   *Trả lời:* Dạ thưa Thầy, đồ án của nhóm em có tổng cộng **20 lớp và 3 interface**. Gồm 7 lớp sản phẩm thời trang, 6 lớp phân cấp con người, 4 lớp quản lý và danh sách mảng, 2 lớp hóa đơn chi tiết, 1 lớp thực thi `Main` và 3 interface nghiệp vụ.
 
-2. **Thầy hỏi: Tại sao lớp `SanPhamThoiTrang` lại là abstract?**  
-   *Trả lời:* Vì trong thực tế không có sản phẩm nào chung chung là "Sản phẩm thời trang". Lớp cha là abstract để đóng vai trò khuôn mẫu chung, ngăn chặn việc tạo đối tượng tùy tiện bằng `new`, và bắt buộc các lớp con phải override `getThongTinRieng()` và `getStringSaveFile()`.
+2. **Thầy hỏi: Lớp `QuanLyCuaHang` đóng vai trò gì trong kiến trúc hướng đối tượng?**  
+   *Trả lời:* Dạ thưa Thầy, `QuanLyCuaHang` áp dụng mẫu thiết kế **Facade Pattern (Bộ điều phối trung tâm)**. Nó đóng gói các kho dữ liệu rời rạc bên dưới (`DanhSachSanPham`, `DanhSachKhachHang`, `NhaCungCap`) thành một giao diện đơn giản duy nhất để lớp `Main` gọi tới, giúp giảm sự phụ thuộc (Loose Coupling) giữa giao diện người dùng và cơ sở dữ liệu.
 
-3. **Thầy hỏi: Đa hình được thể hiện ở đâu trong mã nguồn?**  
-   *Trả lời:* Thể hiện ở 3 vị trí then chốt: (1) Gọi phương thức trừu tượng qua tham chiếu lớp cha `SanPhamThoiTrang`, (2) Đa hình bảo hành qua `IBaoHanh.printWarrantyCard()`, (3) Đa hình chiết khấu đối tượng qua `IGiamGiaKhachHang.applyDiscount()`.
+3. **Thầy hỏi: Đa hình được thể hiện ở những vị trí nào quan trọng nhất?**  
+   *Trả lời:* Thể hiện ở 3 vị trí cốt lõi: (1) Đa hình qua lớp trừu tượng `SanPhamThoiTrang` với các hàm `getThongTinRieng()`, `getStringSaveFile()`, (2) Đa hình bảo hành qua `IBaoHanh.printWarrantyCard()`, (3) Đa hình chiết khấu khách hàng/nhân viên qua `IGiamGiaKhachHang.applyDiscount()`.
 
 4. **Thầy hỏi: Lớp mảng danh sách đối tượng trong đồ án là gì?**  
-   *Trả lời:* Nhóm đã xây dựng 2 lớp mảng chuyên biệt là `DanhSachSanPham` và `DanhSachKhachHang`. Chúng đóng gói `ArrayList` bên trong, cung cấp đầy đủ các phương thức nghiệp vụ CRUD, tự sinh mã và đọc/ghi file.
+   *Trả lời:* Nhóm xây dựng 2 lớp mảng chuyên biệt là `DanhSachSanPham` và `DanhSachKhachHang`. Chúng đóng gói `ArrayList` bên trong và cung cấp trọn vẹn các phương thức nghiệp vụ CRUD (Xem, Thêm, Sửa, Xóa, Tìm kiếm) và Đọc/Ghi file text.
 
-5. **Thầy hỏi: Kỹ thuật ép kiểu Downcasting được dùng ở đoạn nào?**  
-   *Trả lời:* Dùng ở chức năng sửa sản phẩm và in bảo hành: `((AoKhoac) oldSp).setHasHat(hasHat)` và `((IBaoHanh) sp).printWarrantyCard()`, sau khi đã kiểm tra an toàn bằng `instanceof`.
+5. **Thầy hỏi: Tại sao trong `Main.java` nhóm không dùng `scanner.nextInt()` để đọc lựa chọn menu?**  
+   *Trả lời:* Vì `scanner.nextInt()` chỉ đọc số mà để lại ký tự Enter (`\n`) trong bộ đệm bàn phím, dẫn đến các lệnh `scanner.nextLine()` tiếp theo bị trôi qua mà không nhận được dữ liệu của người dùng. Nhóm sử dụng `scanner.nextLine().trim()` kết hợp `Integer.parseInt` để triệt tiêu hoàn toàn lỗi trôi lệnh.
 
-6. **Thầy hỏi: Nhóm xử lý lỗi font tiếng Việt khi đọc/ghi file văn bản như thế nào?**  
-   *Trả lời:* Nhóm sử dụng `InputStreamReader` và `OutputStreamWriter` kết hợp chỉ định tường minh bảng mã `StandardCharsets.UTF_8` cùng luồng đệm `BufferedReader`/`BufferedWriter`.
+6. **Thầy hỏi: Kỹ thuật ép kiểu Downcasting được áp dụng ở đâu?**  
+   *Trả lời:* Được áp dụng khi sửa thuộc tính riêng của sản phẩm: `((AoKhoac) oldSp).setHasHat(hasHat)` và khi in phiếu bảo hành: `((IBaoHanh) sp).printWarrantyCard()`, sau khi đã dùng `instanceof` kiểm tra an toàn.
 
-7. **Thầy hỏi: Biến `tongSoHoaDon` là static có tác dụng gì?**  
-   *Trả lời:* Biến static thuộc về lớp `HoaDon`, được lưu tại một vùng nhớ duy nhất và chia sẻ chung cho toàn bộ các hóa đơn sinh ra, giúp thống kê chính xác tổng số đơn hàng đã hoàn tất trong phiên làm việc.
+7. **Thầy hỏi: Nhóm xử lý lỗi font tiếng Việt khi đọc/ghi file như thế nào?**  
+   *Trả lời:* Nhóm sử dụng `InputStreamReader` và `OutputStreamWriter` kết hợp chỉ định tường minh bảng mã quốc tế `StandardCharsets.UTF_8` cùng luồng đệm `BufferedReader`/`BufferedWriter`, đảm bảo hiển thị chuẩn 100% tiếng Việt trên mọi hệ điều hành.
 
-8. **Thầy hỏi: Tại sao trong hàm tạo và setter lại có lệnh `.replace(",", " ")`?**  
-   *Trả lời:* Đây là biện pháp phòng vệ dữ liệu (Data Sanitization). Vì file lưu trữ theo định dạng CSV phân tách bằng dấu phẩy, nếu tên sản phẩm hay họ tên có dấu phẩy sẽ làm vỡ cấu trúc cột khi đọc file.
+8. **Thầy hỏi: Biến static `HoaDon.tongSoHoaDon` có ý nghĩa gì?**  
+   *Trả lời:* Biến static là biến thuộc về mức Lớp, chỉ lưu duy nhất 1 vùng nhớ chia sẻ cho mọi thực thể hóa đơn, tự động tăng lên sau mỗi lần xuất đơn để thống kê chính xác tổng số hóa đơn đã phục vụ trong phiên làm việc.
 
-9. **Thầy hỏi: Nếu có 2 sản phẩm cùng mã được quét vào giỏ hàng thì hệ thống xử lý sao?**  
-   *Trả lời:* Lớp `HoaDon` sẽ duyệt giỏ hàng bằng hàm `timChiTietTheoMa(code)`. Nếu đã có, hệ thống gọi `ct.tangSoLuong(soLuongMoi)` để cộng dồn số lượng chứ không tạo thêm dòng mới, đúng với nghiệp vụ siêu thị.
+9. **Thầy hỏi: Khi khách hàng mua trùng một mã sản phẩm nhiều lần trong 1 đơn hàng thì hệ thống xử lý sao?**  
+   *Trả lời:* Lớp `HoaDon` duyệt giỏ hàng bằng hàm tìm kiếm theo mã; nếu đã có, hệ thống gọi phương thức `ct.tangSoLuong(sl)` để cộng dồn số lượng chứ không tạo thêm dòng mới, đảm bảo tính thẩm mỹ và nghiệp vụ của hóa đơn.
 
-10. **Thầy hỏi: Nếu ứng dụng bị mất điện tắt đột ngột thì dữ liệu có mất không?**  
-    *Trả lời:* Dạ không, vì hệ thống áp dụng cơ chế tự động lưu tức thì (Auto-save). Bất kỳ thao tác thêm, xóa, sửa sản phẩm hay người dùng đều được ghi đè ngay lập tức xuống `products.txt` và `users.txt`.
+10. **Thầy hỏi: Nếu ứng dụng bị mất điện tắt đột ngột thì dữ liệu có bị mất không?**  
+    *Trả lời:* Dạ không, vì hệ thống áp dụng cơ chế tự động đồng bộ tức thì (Auto-save). Bất kỳ thao tác thêm, xóa, sửa sản phẩm hay người dùng đều được ghi đè ngay lập tức xuống `products.txt` và `users.txt`.
