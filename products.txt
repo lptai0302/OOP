@@ -1,4 +1,6 @@
-AoKhoac,AK001,Adidas,1800000.0,false
-AoThun,AT001,Polo,350000.0,L
-AoKhoac,AK002,Nike Windbreaker,2450000.0,true
-AoKhoac,AK003,Ao Gio  2 Lop,1500000.0,true
+AoKhoac,AK001,Ao Gio Adidas X,1800000.0,true
+AoThun,AT001,Ao Thun Polo Classic,350000.0,L
+QuanJean,QJ001,Quan Jean Slimfit Nam,550000.0,Slimfit
+PhuKien,PK001,That Lung Da Bo Cao Cap,420000.0,Da Bo
+VayDam,VD001,Vay Da Hoi Xoe Cong Chua,950000.0,Voan Cat
+GiayDep,GD001,Giay Sneaker Bitis Hunter,890000.0,42

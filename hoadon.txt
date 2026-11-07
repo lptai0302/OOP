@@ -1,0 +1,120 @@
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD1794061130311
+KHACH HANG: Nguyen Van A
+SO DIEN THOAI: 0912345678
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [VD001] Vay Da Hoi Xoe Cao Cap | SL: 2 | Don gia: 950.000 VND
+TONG THANH TOAN: 1.520.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD1794065690063
+KHACH HANG: Tran VIP
+SO DIEN THOAI: 0911223344
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK001] Adidas | SL: 2 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 2.880.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Test
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Doi Ten
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Doi Ten
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+
+=================================================
+MA HOA DON: HD999
+KHACH HANG: Khach VIP Doi Ten
+SO DIEN THOAI: 0988888888
+DOI TUONG: KhachHangVIP
+CHI TIET SAN PHAM:
+  - [AK100] Ao Adidas X | SL: 1 | Don gia: 1.800.000 VND
+TONG THANH TOAN: 1.440.000 VND
+=================================================
+

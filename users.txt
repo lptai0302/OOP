@@ -1,0 +1,4 @@
+VIP,Nguyen Van VIP,0912345678,VIP001
+ThanThiet,Tran Thi Than Thiet,0987654321,250
+NhanVien,Le Thu Ngan,0901234567,NV01
+QuanLy,Pham Quan Ly Cua Hang,0933333333,QL01,2000000.0

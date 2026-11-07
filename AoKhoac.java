@@ -1,6 +1,11 @@
 public class AoKhoac extends SanPhamThoiTrang implements IBaoHanh {
     private boolean hasHat;
 
+    public AoKhoac() {
+        super("AoKhoac", "", "", 0);
+        this.hasHat = false;
+    }
+
     public AoKhoac(String Type, String MaSP, String TenSP, double GiaSP, boolean hasHat) {
         super(Type, MaSP, TenSP, GiaSP);
         this.hasHat = hasHat;

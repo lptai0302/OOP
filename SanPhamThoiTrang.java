@@ -2,28 +2,40 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 public abstract class SanPhamThoiTrang implements IGiamGia {
+    public static final double TI_LE_VAT = 0.10;
+    private static int tongSoLuongSanPhamDaTao = 0;
+
     private String Type;
     private String MaSP;
     private String TenSP;
     private double GiaSP;
 
+    public SanPhamThoiTrang() {
+        this("ChuaPhanLoai", "", "", 0);
+    }
+
     public SanPhamThoiTrang(String Type, String MaSP, String TenSP, double GiaSP) {
-        this.Type = Type;
-        this.MaSP = MaSP;
-        this.TenSP = TenSP;
+        this.Type = (Type != null) ? Type : "ChuaPhanLoai";
+        this.MaSP = (MaSP != null) ? MaSP : "";
+        this.TenSP = (TenSP != null) ? TenSP : "";
         this.GiaSP = (GiaSP >= 0) ? GiaSP : 0;
+        tongSoLuongSanPhamDaTao++;
     }
 
     public abstract String getStringSaveFile();
     public abstract String getThongTinRieng();
 
     public double VATcalculation() {
-        return this.GiaSP * 0.1;
+        return this.GiaSP * TI_LE_VAT;
     }
 
     @Override
     public double calculateAfterDiscount(double discountPercentage) {
         return this.GiaSP - (this.GiaSP * discountPercentage / 100);
+    }
+
+    public static int getTongSoLuongSanPhamDaTao() {
+        return tongSoLuongSanPhamDaTao;
     }
 
     public double getGiaBan() {
@@ -38,8 +50,20 @@ public abstract class SanPhamThoiTrang implements IGiamGia {
         return this.TenSP;
     }
 
+    public void setTenSP(String TenSP) {
+        if (TenSP != null && !TenSP.trim().isEmpty()) {
+            this.TenSP = TenSP.trim().replace(",", " ");
+        }
+    }
+
     public String getType() {
         return this.Type;
+    }
+
+    public void setType(String Type) {
+        if (Type != null && !Type.trim().isEmpty()) {
+            this.Type = Type.trim();
+        }
     }
 
     public boolean setGiaBan(double GiaBanMoi) {
@@ -66,8 +90,9 @@ public abstract class SanPhamThoiTrang implements IGiamGia {
         return df.format(Math.round(amount));
     }
 
-    private static String formatCell(String text, int maxLen) {
+    public static String formatCell(String text, int maxLen) {
         if (text == null) return "";
+        if (maxLen <= 3) return (text.length() > maxLen) ? text.substring(0, maxLen) : text;
         if (text.length() > maxLen) {
             return text.substring(0, maxLen - 3) + "...";
         }

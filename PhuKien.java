@@ -1,13 +1,24 @@
 public class PhuKien extends SanPhamThoiTrang implements IBaoHanh {
     private String Material;
 
+    public PhuKien() {
+        super("PhuKien", "", "", 0);
+        this.Material = "Kim loai";
+    }
+
     public PhuKien(String Type, String MaSP, String TenSP, double GiaSP, String Material) {
         super(Type, MaSP, TenSP, GiaSP);
-        this.Material = Material;
+        this.Material = (Material != null) ? Material.trim().replace(",", " ") : "Kim loai";
     }
 
     public String getMaterial() {
         return Material;
+    }
+
+    public void setMaterial(String Material) {
+        if (Material != null && !Material.trim().isEmpty()) {
+            this.Material = Material.trim().replace(",", " ");
+        }
     }
 
     @Override

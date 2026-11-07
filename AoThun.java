@@ -1,9 +1,14 @@
 public class AoThun extends SanPhamThoiTrang {
     private String size;
 
+    public AoThun() {
+        super("AoThun", "", "", 0);
+        this.size = "M";
+    }
+
     public AoThun(String Type, String MaSP, String TenSP, double GiaSP, String size) {
         super(Type, MaSP, TenSP, GiaSP);
-        if (size.equalsIgnoreCase("S") || size.equalsIgnoreCase("M") || size.equalsIgnoreCase("L") || size.equalsIgnoreCase("XL")) {
+        if (size != null && (size.equalsIgnoreCase("S") || size.equalsIgnoreCase("M") || size.equalsIgnoreCase("L") || size.equalsIgnoreCase("XL"))) {
             this.size = size.toUpperCase();
         } else {
             System.out.println("Kich co khong hop le (" + size + "). Mac dinh chon co 'M'.");
@@ -16,8 +21,8 @@ public class AoThun extends SanPhamThoiTrang {
     }
 
     public void setSize(String size) {
-        if (size.equals("S") || size.equals("M") || size.equals("L") || size.equals("XL")) {
-            this.size = size;
+        if (size != null && (size.equalsIgnoreCase("S") || size.equalsIgnoreCase("M") || size.equalsIgnoreCase("L") || size.equalsIgnoreCase("XL"))) {
+            this.size = size.toUpperCase();
         } else {
             System.out.println("Kich co khong hop le. Vui long nhap S, M, L hoac XL.");
         }
