@@ -1,67 +1,229 @@
 # BÁO CÁO CHI TIẾT PHẦN 2: PHÂN CẤP CON NGƯỜI & ĐA HÌNH CHIẾT KHẤU
+### HƯỚNG DẪN HỌC & BẢO VỆ VẤN ĐÁP ĐỒ ÁN OOP (ĐIỂM 10/10)
 
-> **Phân công phụ trách:** Thành viên 2  
-> **Chủ đề:** Cây thừa kế Con người (Khách hàng & Nhân viên), Đa hình Chiết khấu qua Interface & Quản lý Nhà cung cấp.
-
----
-
-## 1. TỔNG QUAN CÁC LỚP PHỤ TRÁCH (8 LỚP & INTERFACES)
-1. `Nguoi` (Lớp cơ sở - Base Class)
-2. `KhachHang` (Kế thừa `Nguoi`)
-3. `KhachHangVIP` (Kế thừa `KhachHang`, hiện thực `IGiamGiaKhachHang`)
-4. `KhachHangThanThiet` (Kế thừa `KhachHang`, hiện thực `IGiamGiaKhachHang`)
-5. `NhanVien` (Kế thừa `Nguoi`, hiện thực `IGiamGiaKhachHang`)
-6. `NhanVienQuanLy` (Kế thừa `NhanVien`)
-7. `NhaCungCap` (Lớp độc lập quản lý đối tác)
-8. `IGiamGiaKhachHang` (Interface tính tỷ lệ chiết khấu)
+> **Phân công thành viên:** Thành viên 2  
+> **Các lớp phụ trách (8 lớp & interface):** `Nguoi`, `KhachHang`, `KhachHangVIP`, `KhachHangThanThiet`, `NhanVien`, `NhanVienQuanLy`, `NhaCungCap`, `IGiamGiaKhachHang`.  
+> **Nhiệm vụ cốt lõi:** Nắm vững cấu trúc phân cấp kế thừa con người, cơ chế chiết khấu đa hình thông qua interface `IGiamGiaKhachHang`, tính năng quản lý đối tác nhà cung cấp và bảo vệ dữ liệu người dùng.
 
 ---
 
-## 2. NGUYÊN LÝ HƯỚNG ĐỐI TƯỢNG (OOP) CÀI ĐẶT TRONG PHẦN 2
+## 1. CÂY PHÂN CẤP KẾ THỪA CON NGƯỜI (HUMAN HIERARCHY)
 
-### 2.1. Cây phân cấp kế thừa chuẩn mực (Inheritance Tree)
 ```text
-           [Nguoi]
-          /       \
-   [KhachHang]    [NhanVien]
-     /      \          |
- [VIP]  [ThanThiet] [NhanVienQuanLy]
+                             [Nguoi]
+                            /       \
+                  (extends)/         \(extends)
+                          v           v
+                    [KhachHang]    [NhanVien] <------------------+
+                     /       \          ^                        |
+           (extends)/         \(extends)|(extends)               | implements
+                   v           v        |                        |
+         [KhachHangVIP] [ThanThiet] [NhanVienQuanLy]             |
+               |             |                                   |
+               +-------------+---------- implements -------------+
+                                         v
+                            <<Interface>> IGiamGiaKhachHang
 ```
-- Lớp gốc `Nguoi`: Chứa các thuộc tính định danh cá nhân căn bản: `name` (Họ tên) và `numberPhone` (Số điện thoại).
-- Nhánh `KhachHang`: Quản lý khách hàng của cửa hàng.
-  - `KhachHangVIP`: Có mã thẻ VIP (`cardCodeVIP`), được hưởng mức chiết khấu cao nhất cho khách hàng.
-  - `KhachHangThanThiet`: Có điểm thưởng tích lũy (`diemTichLuy`), tích điểm qua từng lần mua hàng.
-- Nhánh `NhanVien`: Quản lý nhân sự của cửa hàng.
-  - `NhanVien`: Có mã nhân viên (`staffID`), hưởng chiết khấu mua hàng nội bộ.
-  - `NhanVienQuanLy`: Kế thừa toàn bộ quyền lợi của nhân viên và bổ sung thêm thuộc tính `phuCapTrachNhiem` (Phụ cấp quản lý).
 
-### 2.2. Đa hình chiết khấu qua Interface `IGiamGiaKhachHang`
-Interface `IGiamGiaKhachHang` định nghĩa phương thức:
+- **Lớp gốc `Nguoi`**: Nắm giữ các thuộc tính định danh cá nhân căn bản nhất.
+- **Nhánh `KhachHang`**: Quản lý các phân khúc khách hàng mua sắm tại cửa hàng.
+- **Nhánh `NhanVien`**: Quản lý nhân sự làm việc tại cửa hàng, hưởng chính sách mua hàng nội bộ.
+- **Đa hình chiết khấu qua Interface `IGiamGiaKhachHang`**: Thống nhất phương thức `applyDiscount(double)` cho các đối tượng được hưởng ưu đãi giảm giá.
+
+---
+
+## 2. GIẢI THÍCH CHI TIẾT TỪNG ĐOẠN CODE CỐT LÕI
+
+### Đoạn 1: Lớp cơ sở `Nguoi` & Tính Đóng gói (Encapsulation)
 ```java
-public interface IGiamGiaKhachHang {
-    double getDiscountRate();
+public class Nguoi {
+    private String name;
+    private String numberPhone;
+
+    public Nguoi() {
+        this.name = "";
+        this.numberPhone = "";
+    }
+
+    public Nguoi(String name, String numberPhone) {
+        this.name = (name != null) ? name.trim().replace(",", " ") : "";
+        this.numberPhone = (numberPhone != null) ? numberPhone.trim().replace(",", "") : "";
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name.trim().replace(",", " ");
+        }
+    }
+
+    public String getNumberPhone() { return numberPhone; }
+    public void setNumberPhone(String numberPhone) {
+        if (numberPhone != null) {
+            this.numberPhone = numberPhone.trim().replace(",", "");
+        }
+    }
 }
 ```
-Mỗi lớp đối tượng tự quyết định mức chiết khấu riêng biệt thông qua việc Override:
-- **`KhachHangVIP`**: Chiết khấu **20%** (`getDiscountRate() { return 0.20; }`).
-- **`KhachHangThanThiet`**: Chiết khấu **10%** (`getDiscountRate() { return 0.10; }`).
-- **`NhanVien`**: Chiết khấu nội bộ **50%** (`getDiscountRate() { return 0.50; }`).
-- **`NhanVienQuanLy`**: Kế thừa mức chiết khấu **50%** của nhân viên.
-- **Khách hàng thông thường**: Không implement interface -> Chiết khấu **0%**.
-
-### 2.3. Lớp đối tác `NhaCungCap`
-- Quản lý các đơn vị may mặc, nhà máy cung ứng sản phẩm cho cửa hàng (`maNCC`, `tenNCC`, `diaChi`, `soDienThoai`).
-- Đóng gói đầy đủ phương thức hiển thị thông tin dạng dòng bảng chuẩn chỉnh, phục vụ Menu chức năng 9.
+- **Giải thích từng dòng code:**
+  - `private String name; private String numberPhone;`: Thuộc tính được bảo vệ chặt chẽ, không cho phép truy cập trực tiếp từ bên ngoài lớp.
+  - `name.trim().replace(",", " ")`: Cắt bỏ khoảng trắng thừa ở 2 đầu chuỗi và thay thế dấu phẩy bằng khoảng trắng. Giữ an toàn cấu trúc khi lưu xuống file `users.txt` (định dạng CSV).
+  - `numberPhone.trim().replace(",", "")`: Chuẩn hóa số điện thoại, loại bỏ các ký tự dấu phẩy vô tình gõ nhầm.
+  - Các hàm `setName` và `setNumberPhone` kiểm tra dữ liệu đầu vào không được null hoặc rỗng trước khi cập nhật.
 
 ---
 
-## 3. BỘ CÂU HỎI VẤN ĐÁP THẦY HIẾU & CÂU TRẢ LỜI MẪU (10 ĐIỂM)
+### Đoạn 2: Kế thừa trung gian `KhachHang`
+```java
+public class KhachHang extends Nguoi {
+    private String LoaiKH;
 
-### Câu hỏi 1: Tại sao cả Khách hàng và Nhân viên đều có thể mua hàng và được giảm giá? Bạn cài đặt tính năng này bằng kỹ thuật gì?
-- **Trả lời:** Em sử dụng kỹ thuật Đa hình thông qua Interface `IGiamGiaKhachHang`. Dù là `KhachHangVIP` hay `NhanVien`, khi thực hiện thanh toán, lớp `HoaDon` chỉ cần giữ một biến tham chiếu kiểu `Nguoi person`. Nếu đối tượng đó `instanceof IGiamGiaKhachHang`, chương trình sẽ gọi phương thức `getDiscountRate()` để lấy tỷ lệ giảm giá tương ứng mà không cần phải viết hàng loạt lệnh if-else kiểm tra từng loại đối tượng.
+    public KhachHang() {
+        super("", "");
+        this.LoaiKH = "Thuong";
+    }
 
-### Câu hỏi 2: Tại sao `NhanVienQuanLy` lại kế thừa `NhanVien` mà không kế thừa trực tiếp từ `Nguoi`?
-- **Trả lời:** Vì Quản lý bản chất vẫn là một Nhân viên (Quan hệ IS-A), có đầy đủ mã nhân viên (`staffID`), các chức năng làm việc và chế độ ưu đãi giảm giá 50% của nhân viên. Kế thừa `NhanVien` giúp tái sử dụng mã nguồn và chỉ cần mở rộng thêm thuộc tính đặc thù là `phuCapTrachNhiem`.
+    public KhachHang(String name, String numberPhone, String LoaiKH) {
+        super(name, numberPhone);
+        this.LoaiKH = (LoaiKH != null) ? LoaiKH : "Thuong";
+    }
 
-### Câu hỏi 3: Trong phương thức khởi tạo và setter của lớp `Nguoi`, tại sao lại có thao tác `.replace(",", " ")`?
-- **Trả lời:** Thao tác này nhằm loại bỏ dấu phẩy trong họ tên hoặc dữ liệu người dùng nhập vào. Do hệ thống sử dụng định dạng file CSV (phân cách bằng dấu phẩy) để lưu danh sách người dùng vào `users.txt`, nếu họ tên chứa dấu phẩy sẽ làm sai lệch số lượng cột khi đọc file, dẫn đến lỗi đọc dữ liệu. Việc khử dấu phẩy là biện pháp phòng vệ dữ liệu (Data Sanitization).
+    public String getLoaiKH() { return LoaiKH; }
+    public void setLoaiKH(String LoaiKH) { this.LoaiKH = LoaiKH; }
+}
+```
+- **Giải thích từng dòng code:**
+  - `public class KhachHang extends Nguoi`: Quan hệ kế thừa. `KhachHang` kế thừa họ tên và số điện thoại từ `Nguoi`.
+  - `super(name, numberPhone)`: Gọi constructor của lớp cha `Nguoi` để gán giá trị cho `name` và `numberPhone`.
+  - `private String LoaiKH`: Thuộc tính phân loại khách hàng (Thường, VIP, Thân thiết). Mặc định nếu không truyền là `"Thuong"`.
+
+---
+
+### Đoạn 3: Interface `IGiamGiaKhachHang`
+```java
+public interface IGiamGiaKhachHang {
+    double applyDiscount(double totalPrice);
+}
+```
+- **Giải thích từng dòng code:**
+  - Định nghĩa một hợp đồng giao tiếp (Contract). Bất kỳ đối tượng nào tham gia vào hệ thống thanh toán có chính sách ưu đãi giảm giá đều phải hiện thực hàm `applyDiscount`.
+  - Đầu vào là `totalPrice` (tổng tiền trước giảm), đầu ra là tổng tiền sau khi đã trừ đi số tiền được chiết khấu.
+
+---
+
+### Đoạn 4: Khách hàng VIP `KhachHangVIP` giảm 20%
+```java
+public class KhachHangVIP extends KhachHang implements IGiamGiaKhachHang {
+    private String cardCodeVIP;
+
+    public KhachHangVIP(String name, String numberPhone, String cardCodeVIP) {
+        super(name, numberPhone, "VIP");
+        this.cardCodeVIP = (cardCodeVIP != null) ? cardCodeVIP.trim().replace(",", " ") : "";
+    }
+
+    public String getCardCodeVIP() { return cardCodeVIP; }
+
+    @Override
+    public double applyDiscount(double totalPrice) {
+        return totalPrice - (totalPrice * 0.2);
+    }
+}
+```
+- **Giải thích từng dòng code:**
+  - `extends KhachHang implements IGiamGiaKhachHang`: Kế thừa thuộc tính khách hàng và cam kết cài đặt chiết khấu.
+  - `private String cardCodeVIP`: Thuộc tính riêng của khách VIP là mã số thẻ định danh VIP.
+  - `@Override public double applyDiscount(...)`: Ghi đè phương thức từ interface. Công thức: `totalPrice - (totalPrice * 0.2)` -> Giảm trực tiếp **20%** tổng giá trị hóa đơn.
+
+---
+
+### Đoạn 5: Khách hàng Thân thiết `KhachHangThanThiet` giảm 10% & Tích điểm
+```java
+public class KhachHangThanThiet extends KhachHang implements IGiamGiaKhachHang {
+    private int diemTichLuy;
+
+    public KhachHangThanThiet(String name, String numberPhone, int diemTichLuy) {
+        super(name, numberPhone, "ThanThiet");
+        this.diemTichLuy = (diemTichLuy >= 0) ? diemTichLuy : 0;
+    }
+
+    public int getDiemTichLuy() { return diemTichLuy; }
+    public void setDiemTichLuy(int diemTichLuy) {
+        if (diemTichLuy >= 0) this.diemTichLuy = diemTichLuy;
+    }
+
+    @Override
+    public double applyDiscount(double totalPrice) {
+        return totalPrice - (totalPrice * 0.10);
+    }
+}
+```
+- **Giải thích từng dòng code:**
+  - `private int diemTichLuy`: Quản lý điểm thưởng tích lũy của khách hàng thân thiết. Ràng buộc điểm không được âm (`diemTichLuy >= 0`).
+  - `@Override public double applyDiscount(...)`: Chiết khấu ưu đãi **10%** tổng hóa đơn cho khách thân thiết.
+
+---
+
+### Đoạn 6: Nhánh Nhân viên `NhanVien` & `NhanVienQuanLy`
+```java
+public class NhanVien extends Nguoi implements IGiamGiaKhachHang {
+    private String staffID;
+
+    public NhanVien(String name, String numberPhone, String staffID) {
+        super(name, numberPhone);
+        this.staffID = (staffID != null) ? staffID.trim().replace(",", " ") : "";
+    }
+
+    @Override
+    public double applyDiscount(double totalPrice) {
+        return totalPrice - (totalPrice * 0.5);
+    }
+}
+```
+```java
+public class NhanVienQuanLy extends NhanVien {
+    private double phuCapTrachNhiem;
+
+    public NhanVienQuanLy(String name, String numberPhone, String staffID, double phuCapTrachNhiem) {
+        super(name, numberPhone, staffID);
+        this.phuCapTrachNhiem = (phuCapTrachNhiem >= 0) ? phuCapTrachNhiem : 0;
+    }
+
+    public double getPhuCapTrachNhiem() { return phuCapTrachNhiem; }
+}
+```
+- **Giải thích từng dòng code:**
+  - `NhanVien` kế thừa từ `Nguoi` và cài đặt `IGiamGiaKhachHang`.
+  - Mức giảm giá nội bộ dành cho nhân viên mua sắm là **50%** (`totalPrice * 0.5`).
+  - `NhanVienQuanLy` kế thừa từ `NhanVien`: Quản lý cũng là một nhân viên, do đó tự động được hưởng mức giảm giá 50% từ lớp cha.
+  - `private double phuCapTrachNhiem`: Thuộc tính riêng mở rộng của Quản lý, quản lý khoản tiền phụ cấp chức vụ hàng tháng.
+
+---
+
+### Đoạn 7: Lớp độc lập `NhaCungCap`
+```java
+public class NhaCungCap {
+    private String maNCC;
+    private String tenNCC;
+    private String diaChi;
+    private String soDienThoai;
+```
+- **Giải thích:** Quản lý danh mục đối tác may mặc cung ứng hàng hóa cho shop thời trang. Đóng gói đầy đủ getter/setter và phương thức in thông tin chuẩn hàng ngang (`hienThiThongTin()`), phục vụ trực tiếp cho Menu 9 trong hệ thống.
+
+---
+
+## 3. BỘ CÂU HỎI VẤN ĐÁP CỦA THẦY HIẾU & CÁCH TRẢ LỜI ĐẠT 10 ĐIỂM
+
+### Câu 1: Tại sao cả `KhachHangVIP` và `NhanVien` đều cài đặt interface `IGiamGiaKhachHang`? Tại sao không viết phương thức này trong lớp `Nguoi`?
+- **Trả lời:** Dạ thưa Thầy, nếu đặt phương thức giảm giá ở lớp `Nguoi`, thì mọi người bình thường bước vào shop đều có quyền giảm giá, điều này trái với thực tế kinh doanh. Khách hàng vãng lai thông thường không được giảm giá. Vì vậy, nhóm sử dụng Interface `IGiamGiaKhachHang` để đại diện cho một "năng lực đặc biệt" (Capability). Chỉ những đối tượng thuộc diện ưu đãi như VIP (20%), Thân thiết (10%) hoặc Nhân viên nội bộ (50%) mới được gắn interface này.
+
+### Câu 2: Trong lớp `HoaDon`, khi tính tổng tiền, cơ chế đa hình chiết khấu diễn ra như thế nào?
+- **Trả lời:** Dạ thưa Thầy, trong `HoaDon`, nhóm lưu trữ một thuộc tính kiểu cha: `private Nguoi person`. Khi tính tiền:
+```java
+if (person instanceof IGiamGiaKhachHang) {
+    total = ((IGiamGiaKhachHang) person).applyDiscount(total);
+}
+```
+Tại thời điểm chạy (Runtime), máy ảo Java sẽ kiểm tra xem đối tượng thực tế mà con trỏ `person` đang trỏ tới là gì. Nếu là `KhachHangVIP`, nó tự động kích hoạt hàm giảm 20%; nếu là `NhanVien`, nó giảm 50%. Nhờ đa hình, code hoàn toàn không cần các khối lệnh `if-else` kiểm tra từng loại lớp, giúp code ngắn gọn và dễ mở rộng.
+
+### Câu 3: Tại sao `NhanVienQuanLy` không cần viết lại phương thức `applyDiscount` mà vẫn được giảm giá 50%?
+- **Trả lời:** Dạ thưa Thầy, đó là nhờ **Tính kế thừa (Inheritance)**. `NhanVienQuanLy` kế thừa từ `NhanVien`, mà `NhanVien` đã hiện thực `IGiamGiaKhachHang` và định nghĩa `applyDiscount` giảm 50%. Do lớp Quản lý không ghi đè lại phương thức này, Java sẽ tự động sử dụng phương thức được thừa hưởng từ lớp cha.
